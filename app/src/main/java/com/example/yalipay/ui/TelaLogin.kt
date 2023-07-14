@@ -1,5 +1,6 @@
 package com.example.yalipay.ui
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,6 +17,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,19 +31,210 @@ import com.example.yalipay.ui.utils.CampoTelefone
 import com.example.yalipay.ui.utils.CustomButton
 import com.example.yalipay.ui.utils.TextoCustomizado
 
+@Composable
+fun TelaLogin(
+    windowSizeClass: WindowWidthSizeClass,
+    onLogin: () -> Unit,
+    onRecovery: () -> Unit,
+    onSignUp: () -> Unit
+){
+    when(windowSizeClass){
+        WindowWidthSizeClass.Compact ->
+            Compacto(onLogin = onLogin, onRecovery = onRecovery, onSignUp = onSignUp)
+        WindowWidthSizeClass.Medium ->
+            Medium(onLogin = onLogin, onRecovery = onRecovery, onSignUp = onSignUp)
+        else -> Expanded(onLogin = onLogin, onRecovery = onRecovery, onSignUp = onSignUp)
+    }
+}
 
 @Composable
-fun TelaLogin(){
+private fun Compacto(
+    onLogin: () -> Unit,
+    onRecovery: () -> Unit,
+    onSignUp: () -> Unit
+){
+    val localFocusManager = LocalFocusManager.current
     var telefone by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     Column(
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    localFocusManager.clearFocus()
+                })
+            },
         verticalArrangement = Arrangement.Bottom
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(bottom = 14.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(id = R.string.app_name),
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.displayLarge,
+            )
+            Text(
+                modifier = Modifier.padding(bottom = 60.dp),
+                text = "Entre no seu cofre",
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp
+            )
+            CampoTelefone(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 30.dp),
+                value = telefone,
+                onValueChange = { telefone = it }
+            )
+            CampoPassword(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                value = password,
+                onValueChange = { password = it }
+            )
+            TextoCustomizado(
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(top = 16.dp, bottom = 100.dp),
+                text1 = "Esqueci minha senha. ",
+                text2 = "Recuperar",
+                onClick =  { onRecovery() }
+            )
+            CustomButton(
+                modifier = Modifier.fillMaxWidth(),
+                text = "Entrar",
+                onClick =  { onLogin() }
+            )
+            TextoCustomizado(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 10.dp),
+                text1 = "Não tenho conta ",
+                text2 = "Criar",
+                onClick =  { onSignUp() }
+            )
+
+        }
+
+    }
+
+}
+
+@Composable
+private fun Medium(
+    onLogin: () -> Unit,
+    onRecovery: () -> Unit,
+    onSignUp: () -> Unit
+){
+    val localFocusManager = LocalFocusManager.current
+    var telefone by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    localFocusManager.clearFocus()
+                })
+            },
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(0.6f)
+                .padding(bottom = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(id = R.string.app_name),
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.displayLarge,
+            )
+            Text(
+                modifier = Modifier.padding(bottom = 60.dp),
+                text = "Entre no seu cofre",
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp
+            )
+            CampoTelefone(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 30.dp),
+                value = telefone,
+                onValueChange = { telefone = it }
+            )
+            CampoPassword(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                value = password,
+                onValueChange = { password = it }
+            )
+            TextoCustomizado(
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(top = 16.dp, bottom = 80.dp),
+                text1 = "Esqueci minha senha. ",
+                text2 = "Recuperar",
+                onClick =  { onRecovery() }
+            )
+            CustomButton(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                text = "Entrar",
+                onClick =  { onLogin() }
+            )
+            TextoCustomizado(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 10.dp),
+                text1 = "Não tenho conta ",
+                text2 = "Criar",
+                onClick =  { onSignUp() }
+            )
+
+        }
+
+    }
+
+}
+@Composable
+private fun Expanded(
+    onLogin: () -> Unit,
+    onRecovery: () -> Unit,
+    onSignUp: () -> Unit
+){
+    val localFocusManager = LocalFocusManager.current
+    var telefone by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    localFocusManager.clearFocus()
+                })
+            },
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(0.5f)
                 .padding(bottom = 10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -59,7 +254,7 @@ fun TelaLogin(){
             CampoTelefone(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 3.dp),
+                    .padding(bottom = 30.dp),
                 value = telefone,
                 onValueChange = { telefone = it }
             )
@@ -75,12 +270,12 @@ fun TelaLogin(){
                     .padding(top = 16.dp, bottom = 100.dp),
                 text1 = "Esqueci minha senha. ",
                 text2 = "Recuperar",
-                onClick =  {/* TODO */}
+                onClick =  { onRecovery() }
             )
             CustomButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Entrar",
-                onClick =  {/* TODO */}
+                onClick =  { onLogin() }
             )
             TextoCustomizado(
                 modifier = Modifier
@@ -88,7 +283,7 @@ fun TelaLogin(){
                     .padding(top = 10.dp, bottom = 40.dp),
                 text1 = "Não tenho conta ",
                 text2 = "Criar",
-                onClick =  {/* TODO */}
+                onClick =  { onSignUp() }
             )
 
         }
@@ -100,16 +295,15 @@ fun TelaLogin(){
 
 
 
-
 @Preview
 @Composable
-fun Preview3(){
-    YaliPayTheme() {
+fun Preview6(){
+    YaliPayTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            TelaLogin()
+            Expanded({}, {}, {} )
         }
     }
 }

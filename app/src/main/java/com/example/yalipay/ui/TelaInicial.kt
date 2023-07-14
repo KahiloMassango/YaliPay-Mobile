@@ -24,6 +24,7 @@ fun TelaInicial(){
     Column(
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize()
     ) {
 
         TextoInicial(
@@ -40,7 +41,7 @@ fun TelaInicial(){
 }
 
 
-@Preview
+@Preview()
 @Composable
 fun Preview1(){
     YaliPayTheme() {
