@@ -11,9 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.ui.Modifier
-import com.example.yalipay.ui.TelaInicial
-import com.example.yalipay.ui.TelaLogin
-import com.example.yalipay.ui.TelaWelcome
+import com.example.yalipay.ui.TelaCadastro
 import com.example.yalipay.ui.theme.YaliPayTheme
 
 class MainActivity : ComponentActivity() {
@@ -31,7 +29,7 @@ class MainActivity : ComponentActivity() {
                         .verticalScroll(scrollState),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TelaLogin(windowWidth, {}, {}, {})
+                    TelaCadastro(windowWidth, {}, {}, )
                 }
             }
         }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -21,13 +22,15 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yalipay.R
 import com.example.yalipay.ui.theme.YaliPayTheme
 import com.example.yalipay.ui.utils.CampoPassword
-import com.example.yalipay.ui.utils.CampoTelefone
+import com.example.yalipay.ui.utils.CampoCustomizado
 import com.example.yalipay.ui.utils.CustomButton
 import com.example.yalipay.ui.utils.TextoCustomizado
 
@@ -40,15 +43,15 @@ fun TelaLogin(
 ){
     when(windowSizeClass){
         WindowWidthSizeClass.Compact ->
-            Compacto(onLogin = onLogin, onRecovery = onRecovery, onSignUp = onSignUp)
+            TelaCompacta(onLogin = onLogin, onRecovery = onRecovery, onSignUp = onSignUp)
         WindowWidthSizeClass.Medium ->
-            Medium(onLogin = onLogin, onRecovery = onRecovery, onSignUp = onSignUp)
-        else -> Expanded(onLogin = onLogin, onRecovery = onRecovery, onSignUp = onSignUp)
+            TelaMedia(onLogin = onLogin, onRecovery = onRecovery, onSignUp = onSignUp)
+        else -> TelaExpandida(onLogin = onLogin, onRecovery = onRecovery, onSignUp = onSignUp)
     }
 }
 
 @Composable
-private fun Compacto(
+private fun TelaCompacta(
     onLogin: () -> Unit,
     onRecovery: () -> Unit,
     onSignUp: () -> Unit
@@ -71,7 +74,7 @@ private fun Compacto(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 14.dp),
+                .padding(bottom = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -87,16 +90,23 @@ private fun Compacto(
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp
             )
-            CampoTelefone(
+            CampoCustomizado(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 30.dp),
                 value = telefone,
-                onValueChange = { telefone = it }
+                title = "Número Telefone",
+                placeholder = "+244 912 345 678",
+                onValueChange = { telefone = it },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Phone,
+                    imeAction = ImeAction.Next
+                )
             )
             CampoPassword(
                 modifier = Modifier
                     .fillMaxWidth(),
+                normal = true,
                 value = password,
                 onValueChange = { password = it }
             )
@@ -129,7 +139,7 @@ private fun Compacto(
 }
 
 @Composable
-private fun Medium(
+private fun TelaMedia(
     onLogin: () -> Unit,
     onRecovery: () -> Unit,
     onSignUp: () -> Unit
@@ -169,16 +179,23 @@ private fun Medium(
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp
             )
-            CampoTelefone(
+            CampoCustomizado(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 30.dp),
+                title = "Número Telefone",
+                placeholder = "+244 912 345 678",
                 value = telefone,
-                onValueChange = { telefone = it }
+                onValueChange = { telefone = it },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Phone,
+                    imeAction = ImeAction.Next
+                )
             )
             CampoPassword(
                 modifier = Modifier
                     .fillMaxWidth(),
+                normal = true,
                 value = password,
                 onValueChange = { password = it }
             )
@@ -210,8 +227,9 @@ private fun Medium(
     }
 
 }
+
 @Composable
-private fun Expanded(
+private fun TelaExpandida(
     onLogin: () -> Unit,
     onRecovery: () -> Unit,
     onSignUp: () -> Unit
@@ -251,16 +269,23 @@ private fun Expanded(
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp
             )
-            CampoTelefone(
+            CampoCustomizado(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 30.dp),
+                title = "Número Telefone",
+                placeholder = "+244 912 345 678",
                 value = telefone,
-                onValueChange = { telefone = it }
+                onValueChange = { telefone = it },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Phone,
+                    imeAction = ImeAction.Next
+                )
             )
             CampoPassword(
                 modifier = Modifier
                     .fillMaxWidth(),
+                normal = true,
                 value = password,
                 onValueChange = { password = it }
             )
@@ -293,8 +318,6 @@ private fun Expanded(
 }
 
 
-
-
 @Preview
 @Composable
 fun Preview6(){
@@ -303,7 +326,7 @@ fun Preview6(){
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            Expanded({}, {}, {} )
+            TelaCompacta({}, {}, {} )
         }
     }
 }

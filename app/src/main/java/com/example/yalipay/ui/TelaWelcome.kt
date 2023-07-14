@@ -23,13 +23,13 @@ import com.example.yalipay.ui.utils.TextoInicial
 @Composable
 fun TelaWelcome(windowSizeClass: WindowWidthSizeClass, onSignIn: () -> Unit, onSignUp: () -> Unit){
     when(windowSizeClass){
-        WindowWidthSizeClass.Compact -> Compacto(onSignIn = onSignIn, onSignUp = onSignUp)
-        else -> Expandido(onSignIn = onSignIn, onSignUp = onSignUp)
+        WindowWidthSizeClass.Compact -> TelaCompacta(onSignIn = onSignIn, onSignUp = onSignUp)
+        else -> TelaExpandida(onSignIn = onSignIn, onSignUp = onSignUp)
     }
 }
 
 @Composable
-private fun Compacto(onSignIn: () -> Unit, onSignUp: () -> Unit){
+private fun TelaCompacta(onSignIn: () -> Unit, onSignUp: () -> Unit){
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -62,7 +62,7 @@ private fun Compacto(onSignIn: () -> Unit, onSignUp: () -> Unit){
 }
 
 @Composable
-private fun Expandido(onSignIn: () -> Unit, onSignUp: () -> Unit){
+private fun TelaExpandida(onSignIn: () -> Unit, onSignUp: () -> Unit){
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -103,7 +103,7 @@ fun Preview2(){
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            Compacto(onSignIn = { /*TODO*/ }, onSignUp = { /*TODO*/ })
+            TelaCompacta(onSignIn = { /*TODO*/ }, onSignUp = { /*TODO*/ })
         }
     }
 }

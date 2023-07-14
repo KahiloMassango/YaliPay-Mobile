@@ -10,23 +10,35 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,7 +51,6 @@ import com.example.yalipay.ui.theme.spanStyle1
 @Composable
 fun TextoInicial(modifier: Modifier = Modifier){
     Column(
-        //verticalArrangement = Arrangement.spacedBy(0.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .width(200.dp)
@@ -96,7 +107,11 @@ fun CustomButton(modifier: Modifier = Modifier, text: String, onClick: () -> Uni
 }
 
 @Composable
-fun TextoCustomizado(text1: String, text2: String,  modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun TextoCustomizado(
+    modifier: Modifier = Modifier,
+    text1: String,
+    text2: String,
+    onClick: () -> Unit) {
     Text(
         buildAnnotatedString {
             withStyle(style = spanStyle1){
@@ -112,14 +127,21 @@ fun TextoCustomizado(text1: String, text2: String,  modifier: Modifier = Modifie
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CampoTelefone(modifier: Modifier = Modifier, value: String, onValueChange: (String) -> Unit){
+fun CampoCustomizado(
+    modifier: Modifier = Modifier,
+    title: String,
+    placeholder: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    keyboardOptions: KeyboardOptions
+) {
     Column(
         modifier = modifier
     ) {
         Text(
             modifier = Modifier
                 .padding(bottom = 5.dp),
-            text = stringResource(R.string.numero_telefone),
+            text = title,
             style = MaterialTheme.typography.bodySmall,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground
@@ -131,21 +153,28 @@ fun CampoTelefone(modifier: Modifier = Modifier, value: String, onValueChange: (
             value = value,
             onValueChange = { onValueChange(it) },
             singleLine = true,
-            placeholder = { Text(text = "+244 912 345 678") },
+            placeholder = { Text(text = placeholder) },
             shape = RoundedCornerShape(10.dp),
-            colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.secondary),
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Phone,
-                imeAction = ImeAction.Next
-            )
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.secondary,
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
+                disabledContainerColor = MaterialTheme.colorScheme.secondary,
+            ),
+            keyboardOptions = keyboardOptions
         )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CampoPassword(modifier: Modifier = Modifier, value: String, onValueChange: (String) -> Unit){
+fun CampoPassword(
+    modifier: Modifier = Modifier,
+    normal: Boolean,
+    value: String,
+    onValueChange: (String) -> Unit
+){
     val focusManager = LocalFocusManager.current
+    var passwordVisible by remember { mutableStateOf(false) }
     Column(
         modifier = modifier
     ) {
@@ -156,20 +185,63 @@ fun CampoPassword(modifier: Modifier = Modifier, value: String, onValueChange: (
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground
         )
-        OutlinedTextField(
-            modifier = Modifier
-                .height(67.dp)
-                .fillMaxWidth(),
-            value = value,
-            onValueChange = { onValueChange(it) },
-            singleLine = true,
-            shape = RoundedCornerShape(10.dp),
-            colors = TextFieldDefaults
-                .textFieldColors(containerColor = MaterialTheme.colorScheme.secondary),
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions( onDone = { focusManager.clearFocus() }),
-            placeholder = { Text(text = "***********************") }
-        )
+        if (normal){
+            OutlinedTextField(
+                modifier = Modifier
+                    .height(67.dp)
+                    .fillMaxWidth(),
+                value = value,
+                onValueChange = { onValueChange(it) },
+                singleLine = true,
+                shape = RoundedCornerShape(10.dp),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.secondary,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
+                    disabledContainerColor = MaterialTheme.colorScheme.secondary,
+                ),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions( onDone = { focusManager.clearFocus() }),
+                placeholder = { Text(text = "***********************") },
+            )
+        } else {
+            OutlinedTextField(
+                modifier = Modifier
+                    .height(67.dp)
+                    .fillMaxWidth(),
+                value = value,
+                onValueChange = { onValueChange(it) },
+                singleLine = true,
+                visualTransformation =  if (passwordVisible) {
+                    VisualTransformation.None } else { PasswordVisualTransformation() },
+                shape = RoundedCornerShape(10.dp),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.secondary,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.secondary,
+                    disabledContainerColor = MaterialTheme.colorScheme.secondary,
+                ),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions( onDone = { focusManager.clearFocus() }),
+                placeholder = { Text(text = "***********************") },
+                trailingIcon = {
+                    val image = if (passwordVisible) {
+                        Icons.Filled.Visibility
+                    } else {
+                        Icons.Filled.VisibilityOff
+                    }
+
+                    // Texto de acessibilidade
+                    val description = if (passwordVisible) "Hide password" else "Show password"
+
+                    IconButton(onClick = {passwordVisible = !passwordVisible}){
+                        Icon(imageVector  = image, description, tint = Color.White)
+                    }
+                }
+            )
+        }
     }
 }
 

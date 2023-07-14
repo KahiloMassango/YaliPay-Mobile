@@ -41,7 +41,7 @@ fun TelaInicial(){
 }
 
 
-@Preview()
+@Preview
 @Composable
 fun Preview1(){
     YaliPayTheme() {
