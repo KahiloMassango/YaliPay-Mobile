@@ -29,28 +29,28 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.yalipay.R
 import com.example.yalipay.ui.theme.YaliPayTheme
-import com.example.yalipay.ui.utils.CampoPassword
-import com.example.yalipay.ui.utils.CampoCustomizado
-import com.example.yalipay.ui.utils.CustomButton
-import com.example.yalipay.ui.utils.TextoCustomizado
+import com.example.yalipay.ui.utils.ui.PasswordField
+import com.example.yalipay.ui.utils.ui.CustomField
+import com.example.yalipay.ui.utils.ui.CustomButton
+import com.example.yalipay.ui.utils.ui.CustomText
 
 @Composable
-fun TelaCadastro(
+fun RegisterScreen(
     windowSizeClass: WindowWidthSizeClass,
     onLogin: () -> Unit,
     onSignUp: () -> Unit
 ){
     when(windowSizeClass){
         WindowWidthSizeClass.Compact ->
-            TelaCompacta(onLogin = onLogin, onSignUp = onSignUp)
+            CompactScreen(onLogin = onLogin, onSignUp = onSignUp)
         WindowWidthSizeClass.Medium ->
-            TelaMedia(onLogin = onLogin, onSignUp = onSignUp)
-        else -> TelaExpandida(onLogin = onLogin, onSignUp = onSignUp)
+            MediumScreen(onLogin = onLogin, onSignUp = onSignUp)
+        else -> ExpandedScreen(onLogin = onLogin, onSignUp = onSignUp)
     }
 }
 
 @Composable
-private fun TelaCompacta(
+private fun CompactScreen(
     onLogin: () -> Unit,
     onSignUp: () -> Unit
 ){
@@ -89,7 +89,7 @@ private fun TelaCompacta(
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp
             )
-            CampoCustomizado(
+            CustomField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 30.dp),
@@ -102,7 +102,7 @@ private fun TelaCompacta(
                     imeAction = ImeAction.Next,
                 )
             )
-            CampoCustomizado(
+            CustomField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 30.dp),
@@ -115,7 +115,7 @@ private fun TelaCompacta(
                     imeAction = ImeAction.Next,
                 )
             )
-            CampoPassword(
+            PasswordField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 80.dp),
@@ -128,7 +128,7 @@ private fun TelaCompacta(
                 text = "Cadastrar",
                 onClick =  { onSignUp() }
             )
-            TextoCustomizado(
+            CustomText(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(top = 10.dp, bottom = 40.dp),
@@ -144,7 +144,7 @@ private fun TelaCompacta(
 }
 
 @Composable
-private fun TelaMedia(
+private fun MediumScreen(
     onLogin: () -> Unit,
     onSignUp: () -> Unit
 ){
@@ -154,7 +154,7 @@ private fun TelaMedia(
     var email  by remember { mutableStateOf("") }
     Column(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(24.dp)
             .fillMaxSize()
             .pointerInput(Unit) {
                 detectTapGestures(onTap = {
@@ -183,7 +183,7 @@ private fun TelaMedia(
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp
             )
-            CampoCustomizado(
+            CustomField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 30.dp),
@@ -196,7 +196,7 @@ private fun TelaMedia(
                     imeAction = ImeAction.Next,
                 )
             )
-            CampoCustomizado(
+            CustomField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 30.dp),
@@ -209,7 +209,7 @@ private fun TelaMedia(
                     imeAction = ImeAction.Next,
                 )
             )
-            CampoPassword(
+            PasswordField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 80.dp),
@@ -222,10 +222,10 @@ private fun TelaMedia(
                 text = "Cadastrar",
                 onClick =  { onSignUp() }
             )
-            TextoCustomizado(
+            CustomText(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(top = 10.dp, bottom = 40.dp),
+                    .padding(top = 10.dp),
                 text1 = "Já tenho conta ",
                 text2 = "Entrar",
                 onClick =  { onLogin() }
@@ -238,7 +238,7 @@ private fun TelaMedia(
 }
 
 @Composable
-private fun TelaExpandida(
+private fun ExpandedScreen(
     onLogin: () -> Unit,
     onSignUp: () -> Unit
 ){
@@ -249,7 +249,7 @@ private fun TelaExpandida(
 
     Column(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(24.dp)
             .fillMaxSize()
             .pointerInput(Unit) {
                 detectTapGestures(onTap = {
@@ -261,8 +261,7 @@ private fun TelaExpandida(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth(0.5f)
-                .padding(bottom = 10.dp),
+                .fillMaxWidth(0.5f),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -271,14 +270,14 @@ private fun TelaExpandida(
                 style = MaterialTheme.typography.displayLarge,
             )
             Text(
-                modifier = Modifier.padding(bottom = 60.dp),
+                modifier = Modifier.padding(bottom = 50.dp),
                 text = "Entre no seu cofre",
                 color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Bold,
                 fontSize = 14.sp
             )
-            CampoCustomizado(
+            CustomField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 30.dp),
@@ -291,7 +290,7 @@ private fun TelaExpandida(
                     imeAction = ImeAction.Next,
                 )
             )
-            CampoCustomizado(
+            CustomField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 30.dp),
@@ -304,10 +303,10 @@ private fun TelaExpandida(
                     imeAction = ImeAction.Next,
                 )
             )
-            CampoPassword(
+            PasswordField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 80.dp),
+                    .padding(bottom = 60.dp),
                 normal = false,
                 value = password,
                 onValueChange = { password = it }
@@ -317,10 +316,10 @@ private fun TelaExpandida(
                     text = "Cadastrar",
                 onClick =  { onSignUp() }
             )
-            TextoCustomizado(
+            CustomText(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(top = 10.dp, bottom = 40.dp),
+                    .padding(top = 10.dp),
                 text1 = "Já tenho conta ",
                 text2 = "Entrar",
                 onClick =  { onLogin() }
@@ -333,8 +332,6 @@ private fun TelaExpandida(
 }
 
 
-
-
 @Preview
 @Composable
 fun Preview7(){
@@ -343,7 +340,7 @@ fun Preview7(){
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            TelaCompacta({}, {})
+            CompactScreen({}, {})
         }
     }
 }

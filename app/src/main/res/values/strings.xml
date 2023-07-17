@@ -3,4 +3,7 @@
     <string name="texto_inicial">Confiança não tem preço seu dinheiro está seguro aqui</string>
     <string name="numero_telefone">Número Telefone</string>
     <string name="senha">Senha</string>
+    <string name="saldo">Saldo</string>
+    <string name="numero_do_cartao">Número do Cartão</string>
+    <string name="cartoes">Cartões</string>
 </resources>

@@ -11,7 +11,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.ui.Modifier
-import com.example.yalipay.ui.TelaCadastro
+import androidx.navigation.compose.rememberNavController
+import com.example.yalipay.ui.YaliPayApp
 import com.example.yalipay.ui.theme.YaliPayTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,14 +23,16 @@ class MainActivity : ComponentActivity() {
             YaliPayTheme {
                 val windowSize = calculateWindowSizeClass(activity = this)
                 val windowWidth = windowSize.widthSizeClass
+                val navController = rememberNavController()
                 val scrollState = rememberScrollState()
+
                 Surface(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(scrollState),
+                        .fillMaxSize(),
+                        //.verticalScroll(scrollState),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TelaCadastro(windowWidth, {}, {}, )
+                   YaliPayApp(navController = navController, windowSizeClass = windowWidth)
                 }
             }
         }
