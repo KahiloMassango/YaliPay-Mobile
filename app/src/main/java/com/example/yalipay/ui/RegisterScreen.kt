@@ -37,15 +37,15 @@ import com.example.yalipay.ui.utils.ui.CustomText
 @Composable
 fun RegisterScreen(
     windowSizeClass: WindowWidthSizeClass,
-    onLogin: () -> Unit,
+    onSignIn: () -> Unit,
     onSignUp: () -> Unit
 ){
     when(windowSizeClass){
         WindowWidthSizeClass.Compact ->
-            CompactScreen(onLogin = onLogin, onSignUp = onSignUp)
+            CompactScreen(onLogin = onSignIn, onSignUp = onSignUp)
         WindowWidthSizeClass.Medium ->
-            MediumScreen(onLogin = onLogin, onSignUp = onSignUp)
-        else -> ExpandedScreen(onLogin = onLogin, onSignUp = onSignUp)
+            MediumScreen(onLogin = onSignIn, onSignUp = onSignUp)
+        else -> ExpandedScreen(onLogin = onSignIn, onSignUp = onSignUp)
     }
 }
 

@@ -22,17 +22,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             YaliPayTheme {
                 val windowSize = calculateWindowSizeClass(activity = this)
-                val windowWidth = windowSize.widthSizeClass
-                val navController = rememberNavController()
-                val scrollState = rememberScrollState()
-
                 Surface(
                     modifier = Modifier
                         .fillMaxSize(),
-                        //.verticalScroll(scrollState),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                   YaliPayApp(navController = navController, windowSizeClass = windowWidth)
+                   YaliPayApp(windowSizeClass = windowSize.widthSizeClass)
                 }
             }
         }

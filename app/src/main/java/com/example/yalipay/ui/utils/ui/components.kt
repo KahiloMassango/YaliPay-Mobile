@@ -2,15 +2,17 @@ package com.example.yalipay.ui.utils.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.NavigationRailItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,23 +24,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.yalipay.R
-import com.example.yalipay.ui.CompactScreenn
 import com.example.yalipay.ui.theme.YaliPayTheme
 import java.text.NumberFormat
 import java.util.Locale
 
 
-enum class Screen(val icon: Int){
-    Home(R.drawable.home),
-    Transfer(R.drawable.transfer),
-    Cards(R.drawable.cards)
-}
-
-val screens = listOf(
-    Screen.Home,
-    Screen.Transfer,
-    Screen.Cards
+private val icons = listOf(
+    R.drawable.home,
+    R.drawable.transfer,
+    R.drawable.cards
 )
+
+private val navRoutes = listOf(
+    "home",
+    "transfer",
+    "cards"
+)
+
 
 
 
@@ -52,21 +54,20 @@ fun BottomAppBar(modifier: Modifier = Modifier, onClick: (String) -> Unit = { })
             modifier = Modifier.height(61.dp),
             containerColor = Color.Transparent,
         ) {
-            screens.forEachIndexed { index, item ->
+            navRoutes.forEachIndexed { index, item ->
                 NavigationBarItem(
                     icon = {
                         Icon(
                             modifier = Modifier.size(20.dp),
-                            painter = painterResource(id = item.icon),
-                            contentDescription = item.name,
+                            painter = painterResource(id = icons[index]),
+                            contentDescription = item,
                             tint = if (selectedItem == index) MaterialTheme.colorScheme.inverseOnSurface else
                                 MaterialTheme.colorScheme.onBackground
                         )
                     },
                     selected = selectedItem == index,
-                    onClick = { onClick(item.name);
-                        if (selectedItem != index) { selectedItem = index }
-                              },
+                    onClick = {
+                        if (selectedItem != index) { selectedItem = index; onClick(item) } },
                     colors = NavigationBarItemDefaults.colors(
                         indicatorColor = Color(0xFF202020),
                     )
@@ -94,20 +95,44 @@ fun formattedAccountNumber(valeue: String): String {
     return formattedNumber.toString()
 }
 
+@Composable
+fun MediumNavigationRail(modifier: Modifier = Modifier, onClick: (String) -> Unit = { }){
+    var selectedItem by remember { mutableStateOf(0) }
+    Box(
+        modifier = Modifier.background(Color(0xFF202020))
+    ) {
+        NavigationRail(
+            modifier = modifier.height(61.dp),
+            containerColor = Color.Transparent,
+        ) {
+            navRoutes.forEachIndexed { index, item ->
+                NavigationRailItem(
+                    icon = {
+                        Icon(
+                            modifier = Modifier.size(20.dp),
+                            painter = painterResource(id = icons[index]),
+                            contentDescription = item,
+                            tint = if (selectedItem == index) MaterialTheme.colorScheme.inverseOnSurface else
+                                MaterialTheme.colorScheme.onBackground
+                        )
+                    },
+                    selected = selectedItem == index,
+                    onClick = {
+                        if (selectedItem != index) { selectedItem = index; onClick(item) } },
+                    colors = NavigationRailItemDefaults.colors(
+                        indicatorColor = Color(0xFF202020),
+                    )
+                )
+            }
+        }
+    }
+}
+
 
 @Preview
 @Composable
 fun UtilPreview44(){
     YaliPayTheme {
-        Scaffold(
-            topBar = {
-                TopBar(title = "Home", canNavigate = true, onClick = { })
-            },
-            bottomBar = {
-                BottomAppBar(onClick = { it })
-            }
-        ) {
-            CompactScreenn(modifier = Modifier.padding(it), {})
-        }
+        MediumNavigationRail(modifier = Modifier.fillMaxHeight(), onClick = { it })
     }
 }

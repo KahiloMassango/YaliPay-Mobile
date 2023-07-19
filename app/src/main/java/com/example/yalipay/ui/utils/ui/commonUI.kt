@@ -488,9 +488,9 @@ fun OperationCard(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(modifie: Modifier = Modifier, title: String, canNavigate: Boolean, onClick: () -> Unit){
+fun TopBar(modifier: Modifier = Modifier, title: String, canNavigateBack: Boolean, navigateUp: () -> Unit){
     TopAppBar(
-        modifier = modifie.padding(start = 10.dp),
+        modifier = modifier.padding(start = 10.dp),
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.background),
         title = {
@@ -503,8 +503,8 @@ fun TopBar(modifie: Modifier = Modifier, title: String, canNavigate: Boolean, on
             )
         },
         navigationIcon = {
-            if (canNavigate){
-                IconButton(onClick = { onClick() }) {
+            if (canNavigateBack){
+                IconButton(onClick = { navigateUp() }) {
                     Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
                 }
             }
